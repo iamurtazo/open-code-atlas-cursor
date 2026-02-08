@@ -67,14 +67,20 @@
 
         <!-- Right: Auth links -->
         <div class="nav-right">
-          <a href="#" class="nav-link">Login</a>
-          <a href="#" class="btn-signup">Sign Up</a>
+          {% if user %}
+            <a href="/account" class="nav-link nav-username">{{ user.username }}</a>
+            <a href="/signout" class="nav-link">Sign Out</a>
+          {% else %}
+            <button id="openLoginModal" class="nav-link nav-btn">Login</button>
+            <button id="openSignupModal" class="btn-signup nav-btn">Sign Up</button>
+          {% endif %}
         </div>
       </div>
     </div>
   </nav>
 
   <!-- ===== MAIN CONTENT ===== -->
+  {% block content %}
   <main class="main-content">
     <h1 class="page-title">Courses</h1>
 
@@ -383,6 +389,61 @@
     </section>
 
   </main>
+  {% endblock %}
+
+  <!-- ===== AUTH MODALS (only rendered when logged out) ===== -->
+  {% if not user %}
+
+  <!-- Signup Modal -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-left">
+        <div class="modal-left-content">
+          <p class="modal-tagline">LEARN. BUILD. MASTER.</p>
+          <h2 class="modal-heading">Welcome to CodeAtlas</h2>
+          <p class="modal-description">Curated YouTube courses for programmers. Enroll, track progress, and learn — completely free.</p>
+        </div>
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" id="closeSignupModal">&times;</button>
+        <h2 class="modal-form-heading">Create an account</h2>
+        <form id="signupForm" class="modal-form">
+          <div class="form-error" id="signupError"></div>
+          <input type="text" name="username" placeholder="Username" required minlength="3" maxlength="100" />
+          <input type="email" name="email" placeholder="Email" required maxlength="100" />
+          <input type="text" name="first_name" placeholder="First name (optional)" maxlength="70" />
+          <input type="text" name="last_name" placeholder="Last name (optional)" maxlength="100" />
+          <button type="submit" class="btn-submit">SIGN UP</button>
+        </form>
+        <p class="modal-switch">Already have an account? <a href="#" class="modal-link" id="switchToLogin">LOG IN</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-left">
+        <div class="modal-left-content">
+          <p class="modal-tagline">WELCOME BACK</p>
+          <h2 class="modal-heading">Welcome back to CodeAtlas</h2>
+          <p class="modal-description">Pick up where you left off. Your courses and progress are waiting.</p>
+        </div>
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" id="closeLoginModal">&times;</button>
+        <h2 class="modal-form-heading">Log in</h2>
+        <form id="loginForm" class="modal-form">
+          <div class="form-error" id="loginError"></div>
+          <input type="text" name="username" placeholder="Username" required minlength="3" maxlength="100" />
+          <button type="submit" class="btn-submit">LOG IN</button>
+        </form>
+        <p class="modal-switch">Don't have an account? <a href="#" class="modal-link" id="switchToSignup">SIGN UP</a></p>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
