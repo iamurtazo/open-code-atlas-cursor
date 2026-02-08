@@ -60,6 +60,9 @@ img {
 
 /* Brand */
 .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.35rem;
   font-weight: 700;
   color: #111111;
@@ -69,6 +72,13 @@ img {
 
 .navbar-brand:hover {
   color: #2563eb;
+}
+
+.brand-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 /* Nav links area (center-left + right) */
