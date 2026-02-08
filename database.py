@@ -25,6 +25,7 @@ async def get_db():
 
 async def create_tables():
     """Create all tables from Base metadata. Dev convenience — use Alembic in prod."""
+    import models  # noqa: F401 — registers models with Base
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
