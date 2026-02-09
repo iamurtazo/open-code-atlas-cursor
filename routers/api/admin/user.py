@@ -7,9 +7,9 @@ from sqlalchemy.orm import selectinload
 
 from database import get_db
 from models import User
-from schemas import UserCreate, UserProfile, UserUpdate
+from schemas import *
 
-router = APIRouter(prefix="/api/admin", tags=["admin"])
+router = APIRouter(prefix="/api/admin", tags=["admin - users"])
 
 DB = Annotated[AsyncSession, Depends(get_db)]
 
@@ -81,56 +81,6 @@ async def get_user(
     return user
 
 
-@router.get("/users/{username}", response_model=UserProfile)
-async def get_user_by_username(
-    username: str,
-    db: DB,
-    load_enrollments: bool = Query(default=False),
-):
-    """Fetch a single user by username. Optionally eager-load enrollments."""
-
-    stmt = select(User).where(User.username == username)
-
-    if load_enrollments:
-        stmt = stmt.options(selectinload(User.enrollments))
-
-    result = await db.execute(stmt)
-    user = result.scalars().first()
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with username '{username}' not found",
-        )
-
-    return user
-
-
-@router.get("/users/{email}", response_model=UserProfile)
-async def get_user_by_email(
-    email: str,
-    db: DB,
-    load_enrollments: bool = Query(default=False),
-):
-    """Fetch a single user by email. Optionally eager-load enrollments."""
-
-    stmt = select(User).where(User.email == email)
-
-    if load_enrollments:
-        stmt = stmt.options(selectinload(User.enrollments))
-
-    result = await db.execute(stmt)
-    user = result.scalars().first()
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with email '{email}' not found",
-        )
-
-    return user
-
-
 # ── GET /api/admin/users ─────────────────────────────────────────────────────
 
 
@@ -152,7 +102,7 @@ async def list_users(
     return result.scalars().all()
 
 
-# ── PUT /api/admin/users/{user_id} ───────────────────────────────────────────
+# ── PATCH /api/admin/users/{user_id} ─────────────────────────────────────────
 
 
 @router.patch("/users/{user_id}", response_model=UserProfile)
