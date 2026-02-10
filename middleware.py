@@ -3,7 +3,7 @@ from starlette.requests import Request
 from sqlalchemy import select
 
 from database import AsyncSessionLocal
-from models import User
+from models.user import User
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
