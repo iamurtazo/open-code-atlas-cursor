@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.security import hash_password, verify_password
 from database import get_db
 from models import User
 
@@ -39,10 +40,11 @@ async def signup(
     db: DB,
     username: str = Form(...),
     email: str = Form(...),
+    password: str = Form(...),
     first_name: str = Form(default=None),
     last_name: str = Form(default=None),
 ):
-    """Create a new user and set session cookie."""
+    """Create a new user with hashed password and set session cookie."""
 
     # Check username uniqueness (case-insensitive)
     result = await db.execute(
@@ -67,6 +69,7 @@ async def signup(
     new_user = User(
         username=username,
         email=email,
+        hashed_password=hash_password(password),
         first_name=first_name or None,
         last_name=last_name or None,
     )
@@ -89,18 +92,19 @@ async def signup(
 async def login(
     db: DB,
     username: str = Form(...),
+    password: str = Form(...),
 ):
-    """Log in by username only (no password — Phase 2). Set session cookie."""
+    """Log in with username and password. Set session cookie on success."""
 
     result = await db.execute(
         select(User).where(func.lower(User.username) == username.lower())
     )
     user = result.scalars().first()
 
-    if not user:
+    if not user or not verify_password(password, user.hashed_password):
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User '{username}' not found",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password",
         )
 
     response = JSONResponse(

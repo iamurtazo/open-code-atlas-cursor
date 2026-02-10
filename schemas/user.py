@@ -14,9 +14,9 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    """Schema for creating a new user. No password — auth is Phase 2."""
+    """Schema for creating a new user — includes plain-text password."""
 
-    pass
+    password: str = Field(min_length=8, max_length=128)
 
 
 class UserUpdate(BaseModel):

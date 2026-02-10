@@ -5,6 +5,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from core.security import hash_password
 from database import get_db
 from models import User
 from schemas import *
@@ -44,6 +45,7 @@ async def create_user(user_in: UserCreate, db: DB):
     user = User(
         username=user_in.username,
         email=user_in.email,
+        hashed_password=hash_password(user_in.password),
         first_name=user_in.first_name,
         last_name=user_in.last_name,
     )

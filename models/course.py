@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 import uuid
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from enrollment import Enrollment
 from database import Base
+
+if TYPE_CHECKING:
+    from models.enrollment import Enrollment
 
 
 class Course(Base):

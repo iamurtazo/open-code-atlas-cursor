@@ -1,11 +1,16 @@
+# from __future__ import annotations
+
 import uuid
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from enrollment import Enrollment
 from database import Base
+
+if TYPE_CHECKING:
+    from models.enrollment import Enrollment
 
 
 class User(Base):
@@ -20,6 +25,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(
         String(100), unique=True, index=True, nullable=False
     )
+    hashed_password: Mapped[str] = mapped_column(String(128), nullable=False)
     first_name: Mapped[str | None] = mapped_column(String(70), nullable=True)
     last_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
