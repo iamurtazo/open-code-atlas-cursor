@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from admin import setup_admin
 from database import create_tables
 from middleware import AuthMiddleware
 from routers.api.admin import user as admin_user_router
@@ -9,6 +10,9 @@ from routers.api.admin import course as admin_course_router
 from routers.web.users import router as web_users_router
 
 app = FastAPI(title="CodeAtlas", version="0.1.0")
+
+# Admin panel (mounted at /admin)
+setup_admin(app)
 
 # Middleware
 app.add_middleware(AuthMiddleware)
