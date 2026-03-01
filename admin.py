@@ -6,7 +6,7 @@ from sqlalchemy import func, select
 from config import settings
 from core.security import hash_password, verify_password
 from database import AsyncSessionLocal, engine
-from models import User, Course, Enrollment
+from models import User, Course, Enrollment, Lesson
 
 
 # ── Authentication ───────────────────────────────────────────────────────────
@@ -78,13 +78,32 @@ class CourseAdmin(ModelView, model=Course):
     icon = "fa-solid fa-book"
 
     # List page
-    column_list = [Course.id, Course.title, Course.description, Course.created_at]
-    column_searchable_list = [Course.title]
-    column_sortable_list = [Course.title, Course.created_at]
+    column_list = [
+        Course.id, Course.title, Course.category,
+        Course.youtube_playlist_id, Course.lesson_count, Course.created_at,
+    ]
+    column_searchable_list = [Course.title, Course.category]
+    column_sortable_list = [Course.title, Course.category, Course.created_at]
     column_default_sort = (Course.created_at, True)
 
     # Forms
-    form_excluded_columns = [Course.id, Course.created_at, Course.updated_at, Course.enrollments]
+    form_excluded_columns = [Course.id, Course.created_at, Course.updated_at, Course.enrollments, Course.lessons]
+
+
+class LessonAdmin(ModelView, model=Lesson):
+    name = "Lesson"
+    name_plural = "Lessons"
+    icon = "fa-solid fa-play"
+
+    column_list = [
+        Lesson.id, Lesson.position, Lesson.title,
+        Lesson.youtube_video_id, Lesson.duration_seconds, Lesson.course_id,
+    ]
+    column_searchable_list = [Lesson.title]
+    column_sortable_list = [Lesson.position, Lesson.title, Lesson.course_id]
+    column_default_sort = (Lesson.position, False)
+
+    form_excluded_columns = [Lesson.id, Lesson.created_at]
 
 
 class EnrollmentAdmin(ModelView, model=Enrollment):
@@ -116,4 +135,5 @@ def setup_admin(app) -> Admin:
     admin.add_view(UserAdmin)
     admin.add_view(CourseAdmin)
     admin.add_view(EnrollmentAdmin)
+    admin.add_view(LessonAdmin)
     return admin
