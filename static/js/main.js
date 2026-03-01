@@ -101,7 +101,7 @@
       });
       item.classList.add("active");
 
-      history.replaceState(null, "", "?v=" + videoId);
+      history.replaceState(null, "", window.location.pathname + "?v=" + videoId);
 
       item.scrollIntoView({ block: "nearest", behavior: "smooth" });
     });
