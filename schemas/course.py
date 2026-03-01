@@ -11,6 +11,9 @@ from schemas.enrollment import EnrollmentBrief
 class CourseBase(BaseModel):
     title: str = Field(min_length=1, max_length=300)
     description: str | None = Field(default=None, max_length=2000)
+    youtube_playlist_id: str | None = Field(default=None, max_length=64)
+    thumbnail_url: str | None = Field(default=None, max_length=500)
+    category: str | None = Field(default=None, max_length=100)
 
 
 class CourseCreate(CourseBase):
@@ -24,6 +27,9 @@ class CourseUpdate(BaseModel):
 
     title: str | None = Field(default=None, min_length=1, max_length=300)
     description: str | None = Field(default=None, max_length=2000)
+    youtube_playlist_id: str | None = Field(default=None, max_length=64)
+    thumbnail_url: str | None = Field(default=None, max_length=500)
+    category: str | None = Field(default=None, max_length=100)
 
 
 class CourseResponse(BaseModel):
@@ -34,6 +40,10 @@ class CourseResponse(BaseModel):
     id: str
     title: str
     description: str | None
+    youtube_playlist_id: str | None
+    thumbnail_url: str | None
+    category: str | None
+    lesson_count: int
     created_at: datetime
     updated_at: datetime
 

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="course-page">
+  <div class="course-layout">
+
+    <!-- ===== LEFT: Lesson Sidebar ===== -->
+    <aside class="lesson-sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">{{ course.title }}</h2>
+        <p class="sidebar-meta">{{ lessons | length }} lessons</p>
+      </div>
+      <ul class="lesson-list">
+        {% for lesson in lessons %}
+        <li>
+          <a href="#"
+             class="lesson-item{% if lesson.youtube_video_id == active_video_id %} active{% endif %}"
+             data-video-id="{{ lesson.youtube_video_id }}"
+             data-lesson-title="{{ lesson.title }}"
+             data-position="{{ lesson.position }}">
+            <span class="lesson-number">{{ "%02d" | format(lesson.position) }}</span>
+            <div class="lesson-info">
+              <span class="lesson-title">{{ lesson.title }}</span>
+              <span class="lesson-duration">{{ lesson.duration_display }}</span>
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <!-- ===== RIGHT: Video Player ===== -->
+    <section class="video-area">
+      <div class="video-player-wrapper">
+        <iframe
+          id="videoPlayer"
+          src="https://www.youtube.com/embed/{{ active_video_id }}?rel=0"
+          title="Video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="video-details">
+        <h1 class="video-title" id="videoTitle">{{ active_lesson.title }}</h1>
+        {% if course.description %}
+        <p class="video-description">{{ course.description }}</p>
+        {% endif %}
+      </div>
+    </section>
+
+  </div>
+</main>
+{% endblock %}
