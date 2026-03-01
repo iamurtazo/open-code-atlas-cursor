@@ -4,13 +4,14 @@ import uuid
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, String, Text
+from sqlalchemy import DateTime, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
 if TYPE_CHECKING:
     from models.enrollment import Enrollment
+    from models.lesson import Lesson
 
 
 class Course(Base):
@@ -21,6 +22,10 @@ class Course(Base):
     )
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    youtube_playlist_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    thumbnail_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    category: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    lesson_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )
@@ -32,6 +37,9 @@ class Course(Base):
 
     # Relationships
     enrollments: Mapped[list["Enrollment"]] = relationship(back_populates="course")
+    lessons: Mapped[list["Lesson"]] = relationship(
+        back_populates="course", order_by="Lesson.position"
+    )
 
     def __repr__(self) -> str:
         return f"<Course {self.title}>"
