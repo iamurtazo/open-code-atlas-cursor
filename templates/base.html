@@ -91,13 +91,15 @@
         <p class="section-description">List of C programming courses</p>
       </div>
       <div class="course-grid">
-        <a href="#" class="course-card">
+        {% for c in courses | default([]) if c.category == "Programming Languages" and "C Programming" in c.title %}
+        <a href="/course/{{ c.id }}" class="course-card">
           <div class="card-thumbnail thumb-c">C</div>
           <div class="card-body">
-            <h3 class="card-title">C Programming Basics</h3>
-            <p class="card-description">Learn the fundamentals of C including variables, loops, and functions.</p>
+            <h3 class="card-title">{{ c.title }}</h3>
+            <p class="card-description">{{ c.description or '' }}</p>
           </div>
         </a>
+        {% endfor %}
         <a href="#" class="course-card">
           <div class="card-thumbnail thumb-c">C</div>
           <div class="card-body">
