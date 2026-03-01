@@ -77,6 +77,38 @@
 })();
 
 
+// ===== Course Page: Video Switching =====
+(function () {
+  "use strict";
+
+  const player = document.getElementById("videoPlayer");
+  const titleEl = document.getElementById("videoTitle");
+  if (!player || !titleEl) return;
+
+  const lessonItems = document.querySelectorAll(".lesson-item");
+
+  lessonItems.forEach(function (item) {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const videoId = item.dataset.videoId;
+      const lessonTitle = item.dataset.lessonTitle;
+
+      player.src = "https://www.youtube.com/embed/" + videoId + "?rel=0&autoplay=1";
+      titleEl.textContent = lessonTitle;
+
+      lessonItems.forEach(function (el) {
+        el.classList.remove("active");
+      });
+      item.classList.add("active");
+
+      history.replaceState(null, "", "?v=" + videoId);
+
+      item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
+  });
+})();
+
+
 // ===== Auth Modals =====
 (function () {
   "use strict";
