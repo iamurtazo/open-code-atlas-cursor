@@ -35,21 +35,19 @@
               Courses <span class="dropdown-arrow">▼</span>
             </button>
             <div class="dropdown-menu" role="menu">
-              <div class="dropdown-columns">
-
-                <!-- Column 1: Computer Science -->
-                <div class="dropdown-column">
-                  <div class="dropdown-category">Computer Science</div>
+              <div class="dropdown-categories">
+                <button class="dropdown-category-btn active" data-target="panelCS">Computer Science</button>
+                <button class="dropdown-category-btn" data-target="panelLang">Programming Languages</button>
+              </div>
+              <div class="dropdown-items">
+                <div class="dropdown-panel active" id="panelCS">
                   <a href="#" class="dropdown-item" role="menuitem">Data Structures</a>
                   <a href="#" class="dropdown-item" role="menuitem">Algorithms</a>
                   <a href="#" class="dropdown-item" role="menuitem">Operating Systems</a>
                   <a href="#" class="dropdown-item" role="menuitem">Database Management</a>
                   <a href="#" class="dropdown-item" role="menuitem">Computer Networks</a>
                 </div>
-
-                <!-- Column 2: Programming Languages -->
-                <div class="dropdown-column">
-                  <div class="dropdown-category">Programming Languages</div>
+                <div class="dropdown-panel" id="panelLang">
                   <a href="#" class="dropdown-item" role="menuitem">C</a>
                   <a href="#" class="dropdown-item" role="menuitem">C++</a>
                   <a href="#" class="dropdown-item" role="menuitem">Python</a>
@@ -59,7 +57,6 @@
                   <a href="#" class="dropdown-item" role="menuitem">Rust</a>
                   <a href="#" class="dropdown-item" role="menuitem">C#</a>
                 </div>
-
               </div>
             </div>
           </div>

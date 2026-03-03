@@ -142,7 +142,7 @@ img {
   transform: rotate(180deg);
 }
 
-/* Dropdown menu */
+/* Dropdown menu — mega menu */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -151,8 +151,7 @@ img {
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 0.75rem 0;
-  min-width: 520px;
+  padding: 0;
   display: none;
   opacity: 0;
   transform: translateY(-4px);
@@ -160,32 +159,55 @@ img {
 }
 
 .dropdown-menu.show {
-  display: block;
+  display: flex;
   opacity: 1;
   transform: translateY(0);
 }
 
-.dropdown-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.dropdown-column {
-  padding: 0.25rem 0;
-}
-
-.dropdown-column:first-child {
+.dropdown-categories {
+  min-width: 200px;
+  padding: 0.5rem 0;
   border-right: 1px solid #f0f0f0;
 }
 
-.dropdown-category {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #999999;
-  padding: 0.5rem 1.25rem 0.4rem;
+.dropdown-category-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.dropdown-category-btn:hover,
+.dropdown-category-btn.active {
+  background-color: #f5f5f5;
+  color: #2563eb;
+}
+
+.dropdown-items {
+  min-width: 320px;
+  padding: 0.5rem 0.5rem;
+}
+
+.dropdown-panel {
+  display: none;
+}
+
+.dropdown-panel.active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0;
+}
+
+.dropdown-panel .dropdown-item {
+  flex: 0 0 50%;
 }
 
 .dropdown-item {
@@ -735,9 +757,6 @@ img {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .dropdown-menu {
-    min-width: 420px;
-  }
 }
 
 /* Small tablet / large phone */
@@ -808,20 +827,24 @@ img {
     min-width: 100%;
     box-shadow: none;
     border: none;
-    border-radius: 0;
     padding: 0;
     background-color: #fafafa;
     border-radius: 8px;
     margin-top: 0.25rem;
   }
 
-  .dropdown-columns {
-    grid-template-columns: 1fr;
+  .dropdown-menu.show {
+    flex-direction: column;
   }
 
-  .dropdown-column:first-child {
+  .dropdown-categories {
     border-right: none;
     border-bottom: 1px solid #f0f0f0;
+    min-width: 100%;
+  }
+
+  .dropdown-items {
+    min-width: 100%;
   }
 }
 

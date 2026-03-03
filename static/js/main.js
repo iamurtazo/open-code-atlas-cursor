@@ -7,21 +7,36 @@
   const hamburger = document.querySelector(".navbar-hamburger");
   const navbarNav = document.querySelector(".navbar-nav");
 
-  // Toggle courses dropdown
+  var categoryBtns = dropdownMenu ? dropdownMenu.querySelectorAll(".dropdown-category-btn") : [];
+  var panels = dropdownMenu ? dropdownMenu.querySelectorAll(".dropdown-panel") : [];
+
+  function activateCategory(btn) {
+    categoryBtns.forEach(function (b) { b.classList.remove("active"); });
+    panels.forEach(function (p) { p.classList.remove("active"); });
+    btn.classList.add("active");
+    var target = document.getElementById(btn.dataset.target);
+    if (target) target.classList.add("active");
+  }
+
   if (dropdownToggle && dropdownMenu) {
     dropdownToggle.addEventListener("click", function (e) {
       e.stopPropagation();
-      const isOpen = dropdownMenu.classList.contains("show");
-
-      if (isOpen) {
+      if (dropdownMenu.classList.contains("show")) {
         closeDropdown();
       } else {
         openDropdown();
       }
     });
+
+    categoryBtns.forEach(function (btn) {
+      btn.addEventListener("mouseenter", function () {
+        activateCategory(btn);
+      });
+    });
   }
 
   function openDropdown() {
+    if (categoryBtns.length) activateCategory(categoryBtns[0]);
     dropdownMenu.classList.add("show");
     dropdownToggle.classList.add("active");
   }
